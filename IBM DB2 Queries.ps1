@@ -576,7 +576,7 @@ function Open-DB2Connection {
     )
 
     $connection_params = ConvertFrom-Json2 $ConnectionParams
-    $connection_string =  "Driver={$($connection_params.driver_name)};Database=$($connection_params.database);Hostname=$($connection_params.host_name);Port=$($connection_params.port);Protocol=TCPIP;Uid=$($connection_params.user);Pwd=$($connection_params.password);CurrentSchema=$($connection_params.schema);AUTHENTICATION=SERVER"
+    $connection_string =  "Driver={$($connection_params.driver_name)};Database=$($connection_params.database);Hostname=$($connection_params.host_name);Port=$($connection_params.port);Protocol=TCPIP;Uid=$($connection_params.user);Pwd=$($connection_params.password);CurrentSchema=$($connection_params.schema);AUTHENTICATION=SERVER;TxnIsolation=1"
     
     LOG info $connection_string
     
