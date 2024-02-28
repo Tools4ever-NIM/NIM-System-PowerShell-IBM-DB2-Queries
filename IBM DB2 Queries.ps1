@@ -1,3 +1,4 @@
+# version: 1.0.1
 $Log_MaskableKeys = @(
     'password'
 )
@@ -506,7 +507,6 @@ function New-DB2Command {
     )
 
     $sql_command = New-Object System.Data.Odbc.OdbcCommand($CommandText, $Global:DB2Connection)
-
     return $sql_command
 }
 
@@ -563,7 +563,7 @@ function Invoke-DB2Command {
     }
     catch {
         Log error "Failed: $_"
-        Write-Error $_
+        throw $_
     }
 
     Log debug "Done"
@@ -595,6 +595,7 @@ function Open-DB2Connection {
     try {
         $connection = (new-object System.Data.Odbc.OdbcConnection);
         $connection.connectionstring = $connection_string
+		$connection.ConnectionTimeout = 3600
         $connection.open();
 
         $Global:DB2Connection       = $connection
