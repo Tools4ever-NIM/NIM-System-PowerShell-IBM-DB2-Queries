@@ -543,14 +543,16 @@ function Invoke-DB2Command {
             $obj = New-Object -TypeName PSObject -Property $hash_table
 
             # Read data
-            while ($data_reader.Read()) {
-                foreach ($column_name in $column_names) {
-                    $obj.$column_name = if ($data_reader[$column_name] -is [System.DBNull]) { $null } else { $data_reader[$column_name] }
-                }
-
-                # Output data
-                $obj
-            }
+	    if($data_reader.HasRows) {
+	            while ($data_reader.Read()) {
+	                foreach ($column_name in $column_names) {
+	                    $obj.$column_name = if ($data_reader[$column_name] -is [System.DBNull]) { $null } else { $data_reader[$column_name] }
+	                }
+	
+	                # Output data
+	                $obj
+	            }
+	    } else { [PSCustomObject]$hash_table }
 
         }
 
