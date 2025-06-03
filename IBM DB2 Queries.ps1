@@ -18,7 +18,7 @@ function Idm-SystemInfo {
         [string] $ConnectionParams
     )
 
-    Log info "-Connection=$Connection -TestConnection=$TestConnection -Configuration=$Configuration -ConnectionParams='$ConnectionParams'"
+    Log verbose "-Connection=$Connection -TestConnection=$TestConnection -Configuration=$Configuration -ConnectionParams='$ConnectionParams'"
     
     if ($Connection) {
         @(            
@@ -330,7 +330,7 @@ function Idm-SystemInfo {
         @()
     }
 
-    Log info "Done"
+    Log verbose "Done"
 }
 
 
@@ -358,7 +358,7 @@ function Idm-Dispatcher {
         [string] $FunctionParams
     )
 
-    Log info "-Class='$Class' -Operation='$Operation' -GetMeta=$GetMeta -SystemParams='$SystemParams' -FunctionParams='$FunctionParams'"
+    Log verbose "-Class='$Class' -Operation='$Operation' -GetMeta=$GetMeta -SystemParams='$SystemParams' -FunctionParams='$FunctionParams'"
     $connection_params = ConvertFrom-Json2 $SystemParams
 
     if ($Class -eq '') {
@@ -453,7 +453,7 @@ function Idm-Dispatcher {
 
     }
 
-    Log info "Done"
+    Log verbose "Done"
 }
 
 
@@ -580,10 +580,10 @@ function Open-DB2Connection {
     $connection_params = ConvertFrom-Json2 $ConnectionParams
     $connection_string =  "Driver={$($connection_params.driver_name)};Database=$($connection_params.database);Hostname=$($connection_params.host_name);Port=$($connection_params.port);Protocol=TCPIP;Uid=$($connection_params.user);Pwd=$($connection_params.password);CurrentSchema=$($connection_params.schema);AUTHENTICATION=SERVER;TxnIsolation=1"
     
-    LOG info $connection_string
+    Log verbose $connection_string
     
     if ($Global:DB2Connection -and $connection_string -ne $Global:DB2ConnectionString) {
-        Log info "DB2Connection connection parameters changed"
+        Log verbose "DB2Connection connection parameters changed"
         Close-DB2Connection
     }
 
@@ -592,7 +592,7 @@ function Open-DB2Connection {
         Close-DB2Connection
     }
 
-    Log info "Opening DB2Connection '$connection_string'"
+    Log verbose "Opening DB2Connection '$connection_string'"
 
     try {
         $connection = (new-object System.Data.Odbc.OdbcConnection);
@@ -610,14 +610,14 @@ function Open-DB2Connection {
         #Write-Error $_
     }
 
-    Log info "Done"
+    Log verbose "Done"
     
 }
 
 
 function Close-DB2Connection {
     if ($Global:DB2Connection) {
-        Log info "Closing DB2Connection"
+        Log verbose "Closing DB2Connection"
 
         try {
             $Global:DB2Connection.Close()
@@ -627,6 +627,6 @@ function Close-DB2Connection {
             # Purposely ignoring errors
         }
 
-        Log info "Done"
+        Log verbose "Done"
     }
 }
